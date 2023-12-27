@@ -23,7 +23,7 @@ class Program
     private ?string $poster = null;
 
     #[ORM\ManyToOne(inversedBy: 'programs')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete:'CASCADE')]
     private ?Category $category = null;
 
     public function getId(): ?int
