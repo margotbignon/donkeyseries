@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Program;
+use App\Entity\Season;
 use App\Repository\ProgramRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,14 +20,44 @@ Class ProgramController extends AbstractController
         $programs = $programRepository->findAll();
         return $this->render('program/index.html.twig', [
             'programs' => $programs,
-         ]);
+        ]);
     }
 
     #[Route('/{id<\d+>}', methods:["GET"], name: 'show')]
     public function show(Program $program): Response
     {
+
         return $this->render('program/show.html.twig', [
             'program' => $program,
-         ]);
+            'seasons' => $program->getSeasons(),
+        ]);
+    }
+
+    /*#[Route('/{program.id<\d+>}/seasons/{season.id<\d+>}', name: 'season_show')]
+    public function showSeason(Program $program, Season $season): Response
+    {
+
+
+        return $this->render('program/season_show.html.twig', [
+            'program' => $program,
+            'season' => $season,
+        ]);
+    }*/
+
+    #[Route('/{idProgram<\d+>}/seasons/{idSeason<\d+>}', methods:["GET"], name: 'season_show')]
+    public function showSeason(int $idProgram, int $idSeason, EntityManagerInterface $em): Response
+    {
+
+        $program = $em->getRepository(Program::class)
+        ->findOneBy(['id' => $idProgram]);
+
+
+        $season = $em->getRepository(Season::class)
+        ->findOneBy(['id' => $idSeason]);
+
+        return $this->render('program/season_show.html.twig', [
+            'program' => $program,
+            'season' => $season,
+        ]);
     }
 }
