@@ -10,6 +10,12 @@
                 <p>Saison {{ season.number }}</p>
                 <p>Année : {{ season.year }}</p>
                 <p>Description : {{ season.description }}</p>
+            <h2>Les épisodes</h2>
+            {% for episode in season.episodes %}
+                <p><h4> Episode {{ episode.number }}</h4></p>
+                <p>{{ episode.title }}</p>
+                <p> {{ episode.synopsis }}</p>
+            {% endfor %}
         </div>
     </div>
     <a href="{{ path('program_show', {id : program.id }) }}">
