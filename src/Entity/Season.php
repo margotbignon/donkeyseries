@@ -6,16 +6,27 @@ use App\Repository\SeasonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata as Api;
 
 #[ORM\Entity(repositoryClass: SeasonRepository::class)]
+#[Api\ApiResource(
+    operations: [
+        new Api\Get()
+    ]
+)]
 class Season
 {
+    use TimestampableEntity;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups('read:programs_details')]
     private ?int $number = null;
 
     #[ORM\Column]
@@ -26,9 +37,11 @@ class Season
 
     #[ORM\ManyToOne(inversedBy: 'seasons')]
     #[ORM\JoinColumn(nullable: false)]
+    
     private ?Program $program = null;
 
     #[ORM\OneToMany(mappedBy: 'season', targetEntity: Episode::class, orphanRemoval: true)]
+    #[Groups('read:programs_details')]
     private Collection $episodes;
 
     public function __construct()

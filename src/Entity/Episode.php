@@ -4,16 +4,27 @@ namespace App\Entity;
 
 use App\Repository\EpisodeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata as Api;
 
 #[ORM\Entity(repositoryClass: EpisodeRepository::class)]
+#[Api\ApiResource(
+    operations: [
+        new Api\Get()
+    ]
+)]
 class Episode
 {
+    use TimestampableEntity;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('read:programs_details')]
     private ?string $title = null;
 
     #[ORM\Column]

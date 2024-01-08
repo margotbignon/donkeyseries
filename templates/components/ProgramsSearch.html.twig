@@ -1,0 +1,19 @@
+<div{{ attributes }}>
+    <div class="container">
+        <input class="form-control w-50" type="search" data-model="query" placeholder="Rechercher une série"/>
+    </div>
+    <div class="container d-flex flex-wrap mt-3">
+    {% for program in this.getPrograms() %}
+        <div class="card ms-3 mt-3" style="width: 18rem;">
+            <img class="card-img-top cards-img" src="{{program.poster}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{ program.title }}</h5>
+                <p class="card-text">Catégorie : {{ program.category.name }}</p>
+                <a href="{{ path("program_show", { id: program.id }) }}" class="btn btn-primary">Voir la fiche</a>
+            </div>
+        </div>
+    {% else %}
+        Aucune série trouvée.
+    {% endfor %}
+</div>
+</div>

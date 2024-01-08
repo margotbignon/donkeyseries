@@ -1,0 +1,38 @@
+<div{{ attributes }}>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary text-white">
+        <div class="container-fluid navbarSupportedContent text-white">
+            <a class="navbar-brand text-white" href="#">DonkeySeries</a>
+            <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation" data-bs-target="#navbarSupportedContent" >
+                <span class="navbar-toggler-icon text-white"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active text-white" aria-current="page" href="{{ path('app_index') }}">Accueil</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Catégories
+                        </a>
+                        <ul class="dropdown-menu">
+                                {% for category in categories %}
+                                    <li><a class="dropdown-item" href="{{ path('category_show', { slug:category.slug })}}">{{ category.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                            </li>
+                </ul>
+                <div>
+                    <span class="navbar-text text-white">
+                        Mes favoris
+                    </span>
+                    <span class="navbar-text ms-3 text-white">
+                        Inscription
+                    </span>
+                    <span class="navbar-text ms-3 text-white">
+                    Connexion
+                    </span>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>

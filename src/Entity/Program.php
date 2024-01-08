@@ -6,35 +6,61 @@ use App\Repository\ProgramRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\Timestampable;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Metadata as Api;
+use Symfony\Component\Serializer\Attribute\Groups as AttributeGroups;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
+#[UniqueEntity('title', message: 'Cette série existe déjà.', errorPath:'title')]
+#[Api\ApiResource(
+    normalizationContext: [ 'groups' => 'read:programs'],
+    operations: [
+        new Api\Get(normalizationContext: [ 'groups' => 'read:programs_details'])
+    ]
+)]
 class Program
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('read:programs', 'read:programs_details')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: 'title', length: 255, unique: true)]
+    #[Assert\NotBlank(message : 'Ce champ ne doit pas être vide')]
+    #[Assert\Length(max:"255", maxMessage: "Le champ saisi ne doit pas dépasser 255 caractères.")]
+    #[Groups(['read:programs, read:programs_details, read:category_details'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message : 'Ce champ ne doit pas être vide')]
+    #[Groups('read:programs_details')]
     private ?string $summary = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('read:programs_details')]
     private ?string $poster = null;
 
     #[ORM\ManyToOne(inversedBy: 'programs')]
     #[ORM\JoinColumn(nullable: false, onDelete:'CASCADE')]
+    #[Groups('read:programs_details')]
     private ?Category $category = null;
 
     #[ORM\Column]
+    #[Groups('read:programs_details')]
     private ?int $year = null;
 
     #[ORM\Column(length: 255)]
     private ?string $country = null;
 
     #[ORM\OneToMany(mappedBy: 'program', targetEntity: Season::class, orphanRemoval: true)]
+    #[Groups('read:programs_details')]
     private Collection $seasons;
 
     public function __construct()

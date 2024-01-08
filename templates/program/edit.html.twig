@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition de la série {{ program.title }} {% endblock %}
+
+{% block body %}
+    <h1>Edition de la série {{ program.title }}</h1>
+    {{ form(form) }}
+{% endblock %}

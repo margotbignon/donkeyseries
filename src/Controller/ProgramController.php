@@ -2,6 +2,7 @@
 // src/Controller/ProgramController.php
 namespace App\Controller;
 
+
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
@@ -9,6 +10,7 @@ use App\Form\ProgramType;
 use App\Repository\ProgramRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,9 +22,14 @@ use Symfony\Component\HttpFoundation\Request;
 Class ProgramController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(ProgramRepository $programRepository): Response
+    public function index(ProgramRepository $programRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $programs = $programRepository->findAll();
+        $programs = $paginator->paginate(
+            $programRepository->createQueryBuilder('p'), /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            4 /*limit per page*/
+        );
+        
         return $this->render('program/index.html.twig', [
             'programs' => $programs,
         ]);
@@ -37,9 +44,28 @@ Class ProgramController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($form->getData());
             $em->flush();
+            return $this->redirectToRoute('program_index');
         }
 
         return $this->render('program/new.html.twig', [
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/edit/{id<\d+>}', name: 'edit')]
+    public function edit(Program $program, Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(ProgramType::class, $program);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($form->getData());
+            $em->flush();
+            return $this->redirectToRoute('program_index');
+        }
+
+        return $this->render('program/edit.html.twig', [
+            'program' => $program,
             'form' => $form
         ]);
     }
@@ -54,6 +80,15 @@ Class ProgramController extends AbstractController
             'program' => $program,
             'seasons' => $program->getSeasons(),
         ]);
+    }
+
+    #[Route('/{id<\d+>}/delete', name: 'delete')]
+    public function delete(Program $program, EntityManagerInterface $em): Response
+    {
+        $em->remove($program);
+        $em->flush();
+
+        return $this->redirectToRoute('program_index');
     }
 
     #[Route('/{idProgram<\d+>}/seasons/{idSeason<\d+>}', name: 'season_show')]
@@ -74,6 +109,8 @@ Class ProgramController extends AbstractController
             'episode' => $episode
         ]);
     }
+
+
 
     /*#[Route('/{idProgram<\d+>}/seasons/{idSeason<\d+>}', methods:["GET"], name: 'season_show')]
     public function showSeason(int $idProgram, int $idSeason, EntityManagerInterface $em): Response

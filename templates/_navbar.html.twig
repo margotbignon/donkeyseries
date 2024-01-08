@@ -1,30 +1,40 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid navbarSupportedContent">
-    <a class="navbar-brand" href="#">DonkeySeries</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation" data-bs-target="#navbarSupportedContent" >
-      <span class="navbar-toggler-icon"></span>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary text-white">
+  <div class="container-fluid navbarSupportedContent text-white">
+    <a class="navbar-brand text-white" href="#">DonkeySeries</a>
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation" data-bs-target="#navbarSupportedContent" >
+      <span class="navbar-toggler-icon text-white"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ path('app_index') }}">Accueil</a>
+          <a class="nav-link active text-white" aria-current="page" href="{{ path('app_index') }}">Accueil</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ path('category_index') }}">Catégories</a>
+          <a class="nav-link text-white" href="{{ path('category_index') }}">Catégories</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Acteurs</a>
+ <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Link
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
         </li>
       </ul>
-        <span class="navbar-text">
+        <div>
+        <span class="navbar-text text-white">
         Mes favoris
         </span>
-        <span class="navbar-text ms-3">
+        <span class="navbar-text ms-3 text-white">
         Inscription
       </span>
-      <span class="navbar-text ms-3">
+      <span class="navbar-text ms-3 text-white">
         Connexion
       </span>
+      </div>
     </div>
   </div>
 </nav>

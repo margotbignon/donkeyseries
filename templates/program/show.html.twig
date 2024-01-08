@@ -2,19 +2,26 @@
 {% block title %}Série #{{ program.id }}{% endblock %}
 {% block body %}
     <div class="media">
-        <img class="align-self-start mr-3" src="{{program.poster}}" alt="{{ program.title }} poster">
-        <div class="media-body">
-            <h1 class="mt-0">{{ program.title }}</h1>
-            <p>{{ program.summary }}</p>
-            <p>Catégorie : {{ program.category.name }}</p>
-            <h2>Saisons disponibles :</h2>
-            {% for season in seasons %}
-                <a href="{{ path('program_season_show', {idProgram : program.id, idSeason : season.id } ) }}"><p>Saison {{ season.number }}</p></a>
-            {% endfor %}
+        <div class="d-flex flex-column align-items-center flex-lg-row">
+            <img class=" img-show m-5" src="{{program.poster}}" alt="{{ program.title }} poster">
+            <div class="d-flex flex-column align-items-center align-items-lg-start">    
+                <h1 class="">{{ program.title }}</h1>
+                <p class="w-50">{{ program.summary }}</p>
+                <p>Catégories : {{ program.category.name }}</p>
+                    <div class="text-center mt-3">
+                        {% for season in seasons %}
+                            <a href="{{path('program_season_show', {idProgram : program.id, idSeason : season.id} )}}" type="button" class="btn btn-secondary btn-lg ms-3">Saison {{ season.number }}</a>
+                        {% else %}
+                            <p>Pas de saisons disponibles</p>
+                        {% endfor %}
+                    </div>
+            </div>
         </div>
     </div>
-    <a href="{{ path('program_index') }}">
-        Retour à la liste des programmes
-    </a>
+    <div class="ms-5 mt-5">
+        <a href="{{path ('category_show', {slug:program.category.slug} )}}" class="btn btn-primary">
+            Retour à la liste des programmes
+        </a>
+    </div>
 {% endblock %}
 

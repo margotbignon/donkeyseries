@@ -6,8 +6,10 @@ use App\Entity\Category;
 use App\Entity\Program;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,9 +20,9 @@ class ProgramType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, ['label' => 'Titre'])
-            ->add('summary', TextType::class, ['label' => 'Résumé'])
+            ->add('summary', TextareaType::class, ['label' => 'Résumé'])
             ->add('poster')
-            ->add('year', NumberType::class, ['label' => 'Année'])
+            ->add('year', IntegerType::class, ['label' => 'Année'])
             ->add('country', TextType::class, ['label' => 'Pays'])
             ->add('category', EntityType::class, [
                 'class' => Category::class,

@@ -3,32 +3,24 @@
 {% block title %}{{category.name}}{% endblock %}
 
 {% block body %}
-    <h1>{{category.name}}</h1>
+    <h1 class="m-5">Catégorie {{category.name}}</h1>
     
-
-            <table class="table">
-                <th>ID</th>
-                <th>Titre</th>
-                <th>Résumé</th>
-                {% for program in programs %}
-                    <tr>
-                        <td>
-                            {{program.id}}
-                        </td>
-                        <td>
-                            {{program.title}}
-                        </td>
-                        <td>
-                            {{program.summary}}
-                        </td>
-                    </tr>
-                        <td>
-                            <a href="{{ path('program_show', {id:program.id} )}}">Voir sa fiche</a>
-                {% else %}
-                <p>Aucune série trouvée.</p>
-                {% endfor %}
-            </table>
-
-    <a href="{{ path('category_index')}}">Retour à la liste des catégories</a>
+            <div class="container d-flex flex-wrap flex-column align-items-center flex-lg-row">
+  {% for program in programs %}
+    <div class="card ms-3 mt-3" style="width: 18rem;">
+        <img class="card-img-top cards-img" src="{{program.poster}}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">{{ program.title }}</h5>
+          <p class="card-text">Catégorie : {{ program.category.name }}</p>
+          <a href="{{ path("program_show", { id: program.id }) }}" class="btn btn-primary">Voir la fiche</a>
+        </div>
+    </div>
+    {% else %}
+        Aucune série trouvée.
+    {% endfor %}
+    </div>
+    <div class="mt-5 text-center">
+        <a href="{{ path('category_index')}}" class="btn btn-primary mx-auto">Retour à la liste des catégories</a>
+    <div>
 {% endblock %}
 
