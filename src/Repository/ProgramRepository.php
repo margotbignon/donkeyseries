@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Program;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+
 
 /**
  * @extends ServiceEntityRepository<Program>
@@ -20,6 +22,29 @@ class ProgramRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Program::class);
     }
+
+    public function getListQueryBuilder(?string $search): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        if (!$search) {
+            return $qb;
+        }
+
+        $qb->andWhere('p.title LIKE :search')
+            ->setParameter('search', '%'.$search.'%');
+
+        return $qb;
+    }
+
+
+        public function getLastPrograms() : array {
+            return $this->createQueryBuilder('p')
+                ->orderBy('p.year', 'DESC')
+                ->setMaxResults(4)
+                ->getQuery()
+                ->getResult();
+        }
 
 //    /**
 //     * @return Program[] Returns an array of Program objects

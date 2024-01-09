@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'une série{% endblock %}
+
+{% block body %}
+    <h1 class="m-5">Ajout d'une série</h1>
+    <form class="container mt-5">
+        {{ form(form, { attr: { novalidate: 'novalidate'}}) }}
+    </form>
+{% endblock %}

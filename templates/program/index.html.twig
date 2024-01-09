@@ -1,19 +1,42 @@
 {% extends 'base.html.twig' %}
 {% block title %}All programs{% endblock %}
 {% block body %}
-    <h1>Toutes les séries de la table program : </h1>
+    <h1 class="p-3">Toutes les séries</h1>
+
+    {#<twig:ProgramsSearch />#}
+    <table class="ms-5 d-flex justify-content-between w-75 text-decoration-none">
+        <tr>
+            {# sorting of properties based on query components #}
+            <button class="btn btn-secondary ms-5 text-decoration-none" {% if programs.isSorted('p.title') %} class="sorted"{% endif %}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-filter" viewBox="0 0 16 16">
+                    <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+                </svg>
+                {{ knp_pagination_sortable(programs, 'Trier par titre', 'p.title') }}
+            </button>
+            <button class="btn btn-secondary ms-2"{% if programs.isSorted('p.year') %} class="sorted"{% endif %}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-filter" viewBox="0 0 16 16">
+                    <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+                </svg>
+                {{ knp_pagination_sortable(programs, 'Trier par année de sortie', 'p.year') }}
+            </button>
+        </tr>
+    </table>
+    <div class="container d-flex flex-wrap mt-3">
     {% for program in programs %}
-        <div>
-            <h2>{{ loop.index }} / {{ program.title }} - Catégorie : {{ program.category.name }}</h2>
-            <p>{{ program.summary }}</p>
-            <a href="{{ path("program_show", { id: program.id }) }}">Voir la fiche</a>
+        <div class="card ms-3 mt-3" style="width: 18rem;">
+            <img class="card-img-top cards-img" src="{{program.poster}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{ program.title }}</h5>
+                <p class="card-text">Catégorie : {{ program.category.name }}</p>
+                <a href="{{ path("program_show", { id: program.id }) }}" class="btn btn-primary">Voir la fiche</a>
+            </div>
         </div>
-    {% else %}
-        Aucune série trouvée.
-    {% endfor %}
-    <div>
-        <a href="{{ path('app_index') }}">
-            Retour à l'accueil
-        </a>
+        {% endfor %}
     </div>
+
+    <div class="text-center d-flex justify-content-center mt-5 navigation">
+        {{ knp_pagination_render(programs) }}
+    </div>
+
+    
 {% endblock %}
