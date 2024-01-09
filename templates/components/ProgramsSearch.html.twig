@@ -15,5 +15,8 @@
     {% else %}
         Aucune série trouvée.
     {% endfor %}
+        <div class="text-center d-flex justify-content-center mt-5 navigation">
+        {{ knp_pagination_render(programs) }}
+    </div>
 </div>
 </div>

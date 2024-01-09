@@ -25,11 +25,11 @@ Class ProgramController extends AbstractController
     public function index(ProgramRepository $programRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $programs = $paginator->paginate(
-            $programRepository->createQueryBuilder('p'), /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            4 /*limit per page*/
+            $programRepository->createQueryBuilder('p'), 
+            $request->query->getInt('page', 1), 
+            4 
         );
-        
+
         return $this->render('program/index.html.twig', [
             'programs' => $programs,
         ]);

@@ -3,6 +3,8 @@
 namespace App\Twig\Components;
 
 use App\Repository\ProgramRepository;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -21,8 +23,12 @@ final class ProgramsSearch
         
     }
 
-    public function getPrograms(): array
+
+
+    public function getPrograms()
     {
+        
         return $this->programRepository->getListQueryBuilder($this->query)->getQuery()->getResult();
+
     }
 }

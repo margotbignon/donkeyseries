@@ -21,6 +21,14 @@ class SeasonRepository extends ServiceEntityRepository
         parent::__construct($registry, Season::class);
     }
 
+    public function getLastSeasons() : array {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.year', 'DESC')
+            ->setMaxResults(4)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Season[] Returns an array of Season objects
 //     */

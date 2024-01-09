@@ -3,6 +3,25 @@
 {% block title %}DonkeySeries{% endblock %}
 
 {% block body %}
-<h1 class="primary">Bienvenue ! </h1>
-
+<div class="img-header">
+    <img src="{{ asset('build/images/netflix.jpeg')}}" class="img-header img-fluid ">
+</div>
+<h1 class="primary m-5">Les dernières sorties</h1>
+    <div class="d-flex flex-wrap ms-5">
+        {% for lastProgram in lastPrograms %}
+            <div class="card ms-5 mt-3" style="width: 18rem;">
+                <img class="card-img-top cards-img" src="{{lastProgram.program.poster}}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ lastProgram.program.title }}</h5>
+                    <p class="card-text">Saison : {{ lastProgram.number }}</p>
+                    <a href="{{path('program_season_show', {idProgram : lastProgram.program.id, idSeason : lastProgram.id} )}}" class="btn btn-primary">Voir la fiche</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-5">
+        <a href="{{path ('program_index')}}" class="btn btn-primary">
+            Voir la liste de tous les programmes
+        </a>
+    </div>
 {% endblock %}
